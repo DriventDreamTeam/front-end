@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { BsPerson, BsPersonFill } from 'react-icons/bs';
+import { useState } from 'react';
 
 export default function Hotel() {
+  const [selectedRoom, setSelectedRoom] = useState('');
   const hotel = {
     id: 1,
     name: 'hotel bonito',
@@ -10,7 +12,7 @@ export default function Hotel() {
     updatedAt: 'aaaaaa',
     Rooms: [{
       id: 1,
-      name: '112',
+      name: '1',
       capacity: 1,
       hotelId: 1,
       Booking: 0,
@@ -19,7 +21,34 @@ export default function Hotel() {
     },
     {
       id: 2,
-      name: '212',
+      name: '2',
+      capacity: 1,
+      hotelId: 1,
+      Booking: 1,
+      createdAt: true,
+      updatedAt: true,
+    },
+    {
+      id: 3,
+      name: '3',
+      capacity: 2,
+      hotelId: 1,
+      Booking: 0,
+      createdAt: true,
+      updatedAt: true,
+    },
+    {
+      id: 4,
+      name: '4',
+      capacity: 2,
+      hotelId: 1,
+      Booking: 1,
+      createdAt: true,
+      updatedAt: true,
+    },
+    {
+      id: 5,
+      name: '5',
       capacity: 2,
       hotelId: 1,
       Booking: 2,
@@ -27,8 +56,26 @@ export default function Hotel() {
       updatedAt: true,
     },
     {
-      id: 3,
-      name: '312',
+      id: 6,
+      name: '6',
+      capacity: 3,
+      hotelId: 1,
+      Booking: 0,
+      createdAt: true,
+      updatedAt: true,
+    },
+    {
+      id: 7,
+      name: '7',
+      capacity: 3,
+      hotelId: 1,
+      Booking: 1,
+      createdAt: true,
+      updatedAt: true,
+    },
+    {
+      id: 8,
+      name: '8',
       capacity: 3,
       hotelId: 1,
       Booking: 2,
@@ -36,95 +83,80 @@ export default function Hotel() {
       updatedAt: true,
     },
     {
-      id: 4,
-      name: '412',
-      capacity: 5,
+      id: 9,
+      name: '9',
+      capacity: 3,
+      hotelId: 1,
+      Booking: 3,
+      createdAt: true,
+      updatedAt: true,
+    },
+    {
+      id: 10,
+      name: '10',
+      capacity: 4,
+      hotelId: 1,
+      Booking: 0,
+      createdAt: true,
+      updatedAt: true,
+    },
+    {
+      id: 11,
+      name: '11',
+      capacity: 4,
+      hotelId: 1,
+      Booking: 1,
+      createdAt: true,
+      updatedAt: true,
+    },
+    {
+      id: 12,
+      name: '12',
+      capacity: 4,
       hotelId: 1,
       Booking: 2,
       createdAt: true,
       updatedAt: true,
     },
     {
-      id: 4,
-      name: '412',
-      capacity: 5,
+      id: 13,
+      name: '13',
+      capacity: 4,
       hotelId: 1,
-      Booking: 2,
+      Booking: 3,
       createdAt: true,
       updatedAt: true,
     },
     {
-      id: 4,
-      name: '412',
-      capacity: 5,
+      id: 14,
+      name: '14',
+      capacity: 4,
       hotelId: 1,
-      Booking: 2,
-      createdAt: true,
-      updatedAt: true,
-    },
-    {
-      id: 4,
-      name: '412',
-      capacity: 5,
-      hotelId: 1,
-      Booking: 2,
-      createdAt: true,
-      updatedAt: true,
-    },
-    {
-      id: 4,
-      name: '412',
-      capacity: 5,
-      hotelId: 1,
-      Booking: 2,
-      createdAt: true,
-      updatedAt: true,
-    },
-    {
-      id: 4,
-      name: '412',
-      capacity: 5,
-      hotelId: 1,
-      Booking: 2,
-      createdAt: true,
-      updatedAt: true,
-    },
-    {
-      id: 4,
-      name: '412',
-      capacity: 5,
-      hotelId: 1,
-      Booking: 2,
-      createdAt: true,
-      updatedAt: true,
-    },
-    {
-      id: 4,
-      name: '412',
-      capacity: 5,
-      hotelId: 1,
-      Booking: 2,
-      createdAt: true,
-      updatedAt: true,
-    },
-    {
-      id: 4,
-      name: '412',
-      capacity: 5,
-      hotelId: 1,
-      Booking: 2,
-      createdAt: true,
-      updatedAt: true,
-    },
-    {
-      id: 4,
-      name: '412',
-      capacity: 5,
-      hotelId: 1,
-      Booking: 2,
+      Booking: 4,
       createdAt: true,
       updatedAt: true,
     }]
+  };
+
+  function Vacancy({ room }) {
+    let display;
+    if (room.capacity > 2) {
+      if (room.capacity === room.Booking) display = <> <BsPersonFill /> <BsPersonFill /> <BsPersonFill /> </>;
+      if (room.capacity - room.Booking > 2) display = <><BsPerson /> <BsPerson /> {(selectedRoom === room.id ? <BsPersonFill /> : <BsPerson />)}</>;
+      if (room.capacity - room.Booking === 2) display = <><BsPerson /> {(selectedRoom === room.id ? <BsPersonFill /> : <BsPerson />)} <BsPersonFill /></>;
+      if (room.capacity - room.Booking === 1) display = <>{(selectedRoom === room.id ? <BsPersonFill /> : <BsPerson />)} <BsPersonFill /> <BsPersonFill /></>;
+    }
+    if (room.capacity === 2) {
+      if (room.capacity === room.Booking) display = <> <BsPersonFill /> <BsPersonFill /> </>;
+      if (room.Booking === 0) display = <> <BsPerson /> {(selectedRoom === room.id ? <BsPersonFill /> : <BsPerson />)} </>;
+      if (room.Booking === 1) display = <>{(selectedRoom === room.id ? <BsPersonFill /> : <BsPerson />)} <BsPersonFill /> </>;
+    }
+    if (room.capacity < 2) {
+      if (room.capacity === room.Booking) display = <BsPersonFill />;
+      if (room.Booking === 0) display = (selectedRoom === room.id ? <BsPersonFill /> : <BsPerson />);
+    }
+
+    return display;
   };
 
   return (
@@ -134,17 +166,18 @@ export default function Hotel() {
       </h1>
       <Container>
         {hotel.Rooms.map((room, index) => {
+          const teste = (room.capacity - room.Booking > 0) ? 'vague' : 'full';
           return (
-            <Room key={index}>
+            <Room key={index} teste={teste} roomId={room.id} selectedRoom={selectedRoom} onClick={() => { teste === 'vague' ? setSelectedRoom(room.id) : setSelectedRoom(selectedRoom); }}>
               <h2>{room.name}</h2>
-              <div> <BsPersonFill/> <BsPerson/> </div>
+              <div>
+                <Vacancy room={room} />
+              </div>
             </Room>
           );
         })}
       </Container>
-
     </Wrapper>
-
   );
 }
 
@@ -177,7 +210,8 @@ const Room = styled.div`
   border-radius: 10px;
   border: solid 1px #CECECE;
   display: flex;
-  background-color: "";
+  background-color:  ${props => props.teste === 'full' ? '#CECECE' : props.selectedRoom === props.roomId ? '#FFEED2' : ''};
+  selectedRoom
   div{
     height: 100%;
     width: 50%;
@@ -192,10 +226,11 @@ const Room = styled.div`
     font-size: 20px;
     line-height: 23px;
     text-align: center;
-    color: #454545;
+    color: ${props => props.teste === 'full' ? '#9D9D9D' : '#454545'};
     margin-left: 10px;
   };
   svg{
-    /* fill: blue; */
+    width: 20px;
+    fill:  ${props => props.teste === 'full' ? '#8C8C8C' : '#000000'};
   }
 `;
