@@ -38,7 +38,6 @@ export default class PaymentForm extends React.Component {
     };
     postPayment(this?.props?.token, body).then ((res) => {
       this?.props?.setTicket({ ...ticket, status: 'PAID' });
-      console.log(res);
     }  );
   }
 
