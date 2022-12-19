@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import PaymentForm from './CreditCard';
 import getTicketType from './getTicketType';
 
 export default function Container({ ticket }) {
@@ -22,6 +23,13 @@ export default function Container({ ticket }) {
           R$ {ticketData?.price}
         </TicketTypePrice>
       </TicketTypeContainer>
+      <TicketTitle>
+         Pagamento
+      </TicketTitle>
+      <CreditCardContainer>
+        <PaymentForm></PaymentForm>
+      </CreditCardContainer>
+      
     </>
   );
 };
@@ -34,6 +42,7 @@ line-height: 40px;
 letter-spacing: 0em;
 text-align: left;
 color: #000000;
+margin-bottom:37px;
 `;
 
 const TicketTitle = styled.h1`
@@ -44,7 +53,6 @@ line-height: 23px;
 letter-spacing: 0em;
 text-align: left;
 color: #8E8E8E;
-margin-top:37px;
 `;
 
 const TicketTypeContainer = styled.div`
@@ -53,11 +61,10 @@ flex-direction:column;
 align-items:center;
 height: 108px;
 width: 290px;
-left: 330px;
-top: 292px;
 border-radius: 20px;
 background-color: #FFEED2;
 margin-top:17px;
+margin-bottom:30px;
 `;
 
 const TicketTypeName = styled.h2`
@@ -79,5 +86,10 @@ letter-spacing: 0em;
 text-align: center;
 color: #8E8E8E;
 margin-top:8px;
+`;
+
+const CreditCardContainer = styled.div`
+margin-top:21px;    
+border-radius: 4px;
 `;
 
