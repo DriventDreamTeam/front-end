@@ -1,9 +1,12 @@
+import { useContext } from 'react';
 import styled from 'styled-components';
+import UserContext from '../../../contexts/UserContext';
 import PaymentForm from './CreditCard';
 import getTicketType from './getTicketType';
 
-export default function Container({ ticket }) {
+export default function Container({ ticket, setTicket }) {
   let ticketData= {};
+  const { userData } = useContext(UserContext);
   if(ticket) {
     ticketData= getTicketType(ticket);
   }
@@ -27,22 +30,27 @@ export default function Container({ ticket }) {
          Pagamento
       </TicketTitle>
       <CreditCardContainer>
-        <PaymentForm></PaymentForm>
+        {ticket?.status!== 'PAID'? 
+          <PaymentForm token={userData?.token} ticket={ticket} setTicket={setTicket}></PaymentForm> :
+          ''}
       </CreditCardContainer>
-      
+      {ticket?.status!== 'PAID'? <ButtomLabel htmlFor='submit-form' tabindex="0">
+       FINALIZAR PAGAMENTO
+      </ButtomLabel> : ''}
+    
     </>
   );
 };
 
 const PageTitle = styled.h1`
-    font-family: Roboto;
+font-family: Roboto;
 font-size: 34px;
 font-weight: 400;
 line-height: 40px;
 letter-spacing: 0em;
 text-align: left;
 color: #000000;
-margin-bottom:37px;
+margin-bottom:15px;
 `;
 
 const TicketTitle = styled.h1`
@@ -64,7 +72,7 @@ width: 290px;
 border-radius: 20px;
 background-color: #FFEED2;
 margin-top:17px;
-margin-bottom:30px;
+margin-bottom:15px;
 `;
 
 const TicketTypeName = styled.h2`
@@ -91,5 +99,25 @@ margin-top:8px;
 const CreditCardContainer = styled.div`
 margin-top:21px;    
 border-radius: 4px;
+height:160px;
+max-height:100x;
+`;
+
+const ButtomLabel = styled.label`
+display:inline-block;
+margin-top:20px;
+height: 37px;
+width: 182px;
+border-radius: 4px;
+padding:12px;
+box-shadow: 0px 2px 10px 0px #00000040;
+background: #E0E0E0;
+font-family: Roboto;
+font-size: 12px;
+font-weight: 400;
+line-height: 16px;
+letter-spacing: 0em;
+text-align: center;
+
 `;
 

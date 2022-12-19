@@ -14,7 +14,7 @@ export default function Payment() {
   }, []);
   return (
     <>
-      <Container ticket={ticket}>  </Container>
+      <Container ticket={ticket} setTicket={setTicket}>  </Container>
     </>
   );
 }
