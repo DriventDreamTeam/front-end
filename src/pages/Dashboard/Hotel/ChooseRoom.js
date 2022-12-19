@@ -1,12 +1,24 @@
 import styled from 'styled-components';
 import { BsPerson, BsPersonFill } from 'react-icons/bs';
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
+import { getHotelRooms, postBooking } from '../../../services/hotelApi';
+import UserContext from '../../../contexts/UserContext';
 
-export default function ChooseRoom({ hotelId }) {
-  console.log(hotelId);
+export default function ChooseRoom({ hotelId, setLoadBrief }) {
+  const [rooms, setRooms] = useState({});
   const [selectedRoom, setSelectedRoom] = useState('');
+  const [isDisabled, setIsDisabled] = useState(false);
+  const { userData } = useContext(UserContext);
+  const token = userData.token;
+
+  useEffect(() => {
+    getHotelRooms({ token, hotelId }).then((res) => {
+      setRooms([res.data.Rooms]);
+    });
+  }, [hotelId]);
+
+  //moch
   const hotel = {
-    //moch
     id: 1,
     name: 'hotel bonito',
     image: 'belaImagem.jpeg',
@@ -202,11 +214,25 @@ export default function ChooseRoom({ hotelId }) {
     return display;
   }
 
+  function handleClick() {
+    if(!isDisabled) {
+      const body = { roomId: Number(selectedRoom) };
+      postBooking({ token, body }).then((res) => {
+        setLoadBrief(true);
+      }).catch((error) => {
+        setIsDisabled(false);
+      });
+    };
+    setIsDisabled(true);
+    return;
+  }
+
   return (
     <Wrapper>
       <h1>Ótima pedida! Agora escolha seu quarto:</h1>
       <Container>
         {hotel.Rooms.map((room, index) => {
+          //substituir "hotel.Rooms" por "rooms"
           const roomVacancy = room.capacity - room.Booking > 0 ? 'vague' : 'full';
           const colored = room.capacity - room.Booking > 3 ? 3 : room.capacity - room.Booking;
           return (
@@ -228,6 +254,11 @@ export default function ChooseRoom({ hotelId }) {
           );
         })}
       </Container>
+      <Button
+        onClick={() => {handleClick();}}
+      >
+        RESERVAR QUARTO
+      </Button>
     </Wrapper>
   );
 }
@@ -287,4 +318,25 @@ const Room = styled.div`
       fill: ${(props) => (props.selectedRoom === props.roomId ? '#FF4791' : '')};
     }
   }
+  cursor: ${(props) => (props.roomVacancy === 'full' ? '' : 'pointer')};
+`;
+
+const Button = styled.div`
+  width: 182px;
+  height: 37px;
+  margin: 45px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
+  background-color: #e0e0e0;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
+  color: #000000;
+  cursor: pointer;
 `;

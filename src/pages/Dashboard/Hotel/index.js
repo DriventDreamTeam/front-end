@@ -4,11 +4,12 @@ import UserContext from '../../../contexts/UserContext';
 import { getHotels } from '../../../services/hotelApi';
 import Container from './Container';
 import Typography from '@material-ui/core/Typography';
-import ChooseRoom from '../../../components/Hotel/ChooseRoom';
+import ChooseRoom from './ChooseRoom';
 
 export default function Hotel() {
   const [hotels, setHotels] = useState([]);
   const [selected, setSelected] = useState({});
+  const [loadBrief, setLoadBrief] = useState(false);
   const { userData } = useContext(UserContext);
 
   useEffect(() => {
@@ -19,10 +20,7 @@ export default function Hotel() {
 
   return (
     <>
-      <ChooseRoom hotelId={1} />
-      
       <StyledTypography variant="h4">Escolha de quarto e hotel</StyledTypography>
-
       {hotels.length === 0 ? (
         <Wrapper>
           <Warning>
@@ -44,6 +42,7 @@ export default function Hotel() {
           </Hotels>
         </>
       )}
+      {selected.id ? <ChooseRoom hotelId={selected.id} setLoadBrief={setLoadBrief} /> : <></>}
     </>
   );
 }
