@@ -2,14 +2,14 @@ import styled from 'styled-components';
 import { useContext } from 'react';
 import { ModalityContext } from '../../contexts/modalityContext';
 
-export default function TicketOption({ id, name, price }) {
+export default function TicketOption({ id, title, price }) {
   const { ticketModality, chooseModality } = useContext(ModalityContext);
   const selected = ticketModality.type === id;
   const bgColor = selected ? '#FFEED2' : '#0000';
 
   return (
     <Modality bgColor={bgColor} onClick={() => chooseModality({ type: id, price: price })}>
-      <span>{name}</span>
+      <span>{title}</span>
       <span>R$ {price}</span>
     </Modality>
   );
