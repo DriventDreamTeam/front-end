@@ -13,146 +13,9 @@ export default function ChooseRoom({ hotelId, setLoadBrief }) {
 
   useEffect(() => {
     getHotelRooms({ token, hotelId }).then((res) => {
-      setRooms([res.data.Rooms]);
+      setRooms([res.Rooms]);
     });
   }, [hotelId]);
-
-  //moch
-  const hotel = {
-    id: 1,
-    name: 'hotel bonito',
-    image: 'belaImagem.jpeg',
-    createdAt: 'aaaaaa',
-    updatedAt: 'aaaaaa',
-    Rooms: [
-      {
-        id: 1,
-        name: '1',
-        capacity: 1,
-        hotelId: 1,
-        Booking: 0,
-        createdAt: true,
-        updatedAt: true,
-      },
-      {
-        id: 2,
-        name: '2',
-        capacity: 1,
-        hotelId: 1,
-        Booking: 1,
-        createdAt: true,
-        updatedAt: true,
-      },
-      {
-        id: 3,
-        name: '3',
-        capacity: 2,
-        hotelId: 1,
-        Booking: 0,
-        createdAt: true,
-        updatedAt: true,
-      },
-      {
-        id: 4,
-        name: '4',
-        capacity: 2,
-        hotelId: 1,
-        Booking: 1,
-        createdAt: true,
-        updatedAt: true,
-      },
-      {
-        id: 5,
-        name: '5',
-        capacity: 2,
-        hotelId: 1,
-        Booking: 2,
-        createdAt: true,
-        updatedAt: true,
-      },
-      {
-        id: 6,
-        name: '6',
-        capacity: 3,
-        hotelId: 1,
-        Booking: 0,
-        createdAt: true,
-        updatedAt: true,
-      },
-      {
-        id: 7,
-        name: '7',
-        capacity: 3,
-        hotelId: 1,
-        Booking: 1,
-        createdAt: true,
-        updatedAt: true,
-      },
-      {
-        id: 8,
-        name: '8',
-        capacity: 3,
-        hotelId: 1,
-        Booking: 2,
-        createdAt: true,
-        updatedAt: true,
-      },
-      {
-        id: 9,
-        name: '9',
-        capacity: 3,
-        hotelId: 1,
-        Booking: 3,
-        createdAt: true,
-        updatedAt: true,
-      },
-      {
-        id: 10,
-        name: '10',
-        capacity: 4,
-        hotelId: 1,
-        Booking: 0,
-        createdAt: true,
-        updatedAt: true,
-      },
-      {
-        id: 11,
-        name: '11',
-        capacity: 4,
-        hotelId: 1,
-        Booking: 1,
-        createdAt: true,
-        updatedAt: true,
-      },
-      {
-        id: 12,
-        name: '12',
-        capacity: 4,
-        hotelId: 1,
-        Booking: 2,
-        createdAt: true,
-        updatedAt: true,
-      },
-      {
-        id: 13,
-        name: '13',
-        capacity: 4,
-        hotelId: 1,
-        Booking: 3,
-        createdAt: true,
-        updatedAt: true,
-      },
-      {
-        id: 14,
-        name: '14',
-        capacity: 4,
-        hotelId: 1,
-        Booking: 4,
-        createdAt: true,
-        updatedAt: true,
-      },
-    ],
-  };
 
   function Vacancy({ room }) {
     let display;
@@ -231,8 +94,7 @@ export default function ChooseRoom({ hotelId, setLoadBrief }) {
     <Wrapper>
       <h1>Ótima pedida! Agora escolha seu quarto:</h1>
       <Container>
-        {hotel.Rooms.map((room, index) => {
-          //substituir "hotel.Rooms" por "rooms"
+        {rooms.map((room, index) => {
           const roomVacancy = room.capacity - room.Booking > 0 ? 'vague' : 'full';
           const colored = room.capacity - room.Booking > 3 ? 3 : room.capacity - room.Booking;
           return (
