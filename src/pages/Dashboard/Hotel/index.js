@@ -14,7 +14,7 @@ export default function Hotel() {
 
   useEffect(() => {
     getHotels(userData.token).then((res) => {
-      setHotels([...res.data]);
+      setHotels([...res]);
     });
   }, []);
 
