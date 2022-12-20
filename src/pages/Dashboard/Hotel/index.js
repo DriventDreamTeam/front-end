@@ -20,29 +20,35 @@ export default function Hotel() {
 
   return (
     <>
-      <StyledTypography variant="h4">Escolha de quarto e hotel</StyledTypography>
-      {hotels.length === 0 ? (
-        <Wrapper>
-          <Warning>
-            <span>Sua modalidade de ingresso não inclui hospedagem</span>
-          </Warning>
-          <Warning>
-            <span>Prossiga para a escolha de atividades</span>
-          </Warning>
-        </Wrapper>
+      {loadBrief ? (
+        <ChooseRoom hotelId={selected.id} setLoadBrief={setLoadBrief} />
       ) : (
         <>
-          <ChooseHotel>
-            <span>Primeiro, escolha o seu hotel</span>
-          </ChooseHotel>
-          <Hotels>
-            {hotels.map((value, index) => (
-              <Container value={value} selected={selected} setSelected={setSelected} key={index} />
-            ))}
-          </Hotels>
+          <StyledTypography variant="h4">Escolha de quarto e hotel</StyledTypography>
+          {hotels.length === 0 ? (
+            <Wrapper>
+              <Warning>
+                <span>Sua modalidade de ingresso não inclui hospedagem</span>
+              </Warning>
+              <Warning>
+                <span>Prossiga para a escolha de atividades</span>
+              </Warning>
+            </Wrapper>
+          ) : (
+            <>
+              <ChooseHotel>
+                <span>Primeiro, escolha o seu hotel</span>
+              </ChooseHotel>
+              <Hotels>
+                {hotels.map((value, index) => (
+                  <Container value={value} selected={selected} setSelected={setSelected} key={index} />
+                ))}
+              </Hotels>
+            </>
+          )}
+          {selected.id ? <ChooseRoom hotelId={selected.id} setLoadBrief={setLoadBrief} /> : <></>}
         </>
       )}
-      {selected.id ? <ChooseRoom hotelId={selected.id} setLoadBrief={setLoadBrief} /> : <></>}
     </>
   );
 }
