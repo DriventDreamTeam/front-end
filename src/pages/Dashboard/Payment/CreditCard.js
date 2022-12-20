@@ -15,37 +15,37 @@ export default class PaymentForm extends React.Component {
 
   handleInputFocus = (e) => {
     this.setState({ focus: e.target.name });
-  }
-  
+  };
+
   handleInputChange = (e) => {
     const { name, value } = e.target;
-    
+
     this.setState({ [name]: value });
-  }
+  };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const ticket= this?.props?.ticket;
-    const body= {
+    const ticket = this?.props?.ticket;
+    const body = {
       ticketId: ticket?.id,
       cardData: {
         issuer: 'visa',
         number: this?.state?.number,
         name: this?.state?.name,
         expirationDate: this?.state?.expiry,
-        cvv: this?.state?.cvv
-      }
+        cvv: this?.state?.cvv,
+      },
     };
-    postPayment(this?.props?.token, body).then ((res) => {
+    postPayment(this?.props?.token, body).then((res) => {
       this?.props?.setTicket({ ...ticket, status: 'PAID' });
-    }  );
-  }
+    });
+  };
 
   render() {
     return (
       <Container>
         <CreditCardContainer>
-          <Cards 
+          <Cards
             cvc={this.state.cvc}
             expiry={this.state.expiry}
             focused={this.state.focus}
@@ -54,109 +54,113 @@ export default class PaymentForm extends React.Component {
             required
           />
         </CreditCardContainer>
-       
+
         <CreditCardForm onSubmit={this.handleSubmit}>
-        	<CreditCardInput type="tel"
+          <CreditCardInput
+            type="tel"
             name="number"
             minLength={16}
             maxLength={16}
             placeholder="Card Number"
             required
             onChange={this.handleInputChange}
-            onFocus={this.handleInputFocus}>
-          </CreditCardInput>
+            onFocus={this.handleInputFocus}
+          ></CreditCardInput>
 
-          <CreditCardInput type="text"
+          <CreditCardInput
+            type="text"
             name="name"
             placeholder="Name"
             onChange={this.handleInputChange}
-            onFocus={this.handleInputFocus}>
-          </CreditCardInput>
+            onFocus={this.handleInputFocus}
+          ></CreditCardInput>
 
           <DateAndCvcContainer>
-            <CreditCardDate  type="text"
+            <CreditCardDate
+              type="text"
               name="expiry"
-              pattern='(0[1-9]|1[0-2])((2[3-9])|([3-9][0-9]))'
+              pattern="(0[1-9]|1[0-2])((2[3-9])|([3-9][0-9]))"
               minLength={4}
               maxLength={4}
               required
               placeholder="Valid Thru"
               onChange={this.handleInputChange}
-              onFocus={this.handleInputFocus}>
-            </CreditCardDate>
+              onFocus={this.handleInputFocus}
+            ></CreditCardDate>
 
-            <CreditCardCVC           type="tel"
+            <CreditCardCVC
+              type="tel"
               name="cvc"
               minLength={3}
               maxLength={3}
               placeholder="CVC"
               required
               onChange={this.handleInputChange}
-              onFocus={this.handleInputFocus}>
-            </CreditCardCVC>
+              onFocus={this.handleInputFocus}
+            ></CreditCardCVC>
           </DateAndCvcContainer>
-          <HiddenButtom type="submit"  id='submit-form'>
-          </HiddenButtom>
+          <HiddenButtom type="submit" id="submit-form"></HiddenButtom>
         </CreditCardForm>
       </Container>
     );
   }
-};
+}
 
 const Container = styled.div`
-display:flex;
-align-items:center;
-height:100%;`;
+  display: flex;
+  align-items: center;
+  height: 100%;
+`;
 
 const CreditCardContainer = styled.div`
-display:flex;
-height:100%;
-.rccs__card{
-  height:100%;
-  width:auto;
-}
+  display: flex;
+  height: 100%;
+  .rccs__card {
+    height: 100%;
+    width: auto;
+  }
 `;
 const CreditCardForm = styled.form`
-height:100%;
-margin-left:20px;
-display:flex;
-width:40%;
-flex-direction:column;
-justify-content:space-between;
-align-items:center;
+  height: 100%;
+  margin-left: 20px;
+  display: flex;
+  width: 40%;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 `;
 const CreditCardInput = styled.input`
-border-radius:5px;
-border:1px solid #222;
-padding:10px;
-outline: none;
-height: 35px;
-width: 100%;
+  border-radius: 5px;
+  border: 1px solid #222;
+  padding: 10px;
+  outline: none;
+  height: 35px;
+  width: 100%;
 `;
 
 const DateAndCvcContainer = styled.div`
-display:flex;
-justify-content:space-between;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const CreditCardDate = styled.input`
-border-radius:5px;
-border:1px solid #222;
-padding:10px;
-outline: none;
-height: 35px;
-width: 60%;
+  border-radius: 5px;
+  border: 1px solid #222;
+  padding: 10px;
+  outline: none;
+  height: 35px;
+  width: 60%;
 `;
 
 const CreditCardCVC = styled.input`
-border-radius:5px;
-border:1px solid #222;
-padding:10px;
-outline: none;
-height: 35px;
-margin-left:20px;
-width: 30%;
+  border-radius: 5px;
+  border: 1px solid #222;
+  padding: 10px;
+  outline: none;
+  height: 35px;
+  margin-left: 20px;
+  width: 30%;
 `;
 const HiddenButtom = styled.button`
-display:none;
+  display: none;
 `;
