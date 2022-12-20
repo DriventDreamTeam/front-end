@@ -22,17 +22,29 @@ export default function Container({ value, selected, setSelected }) {
     });
   }
 
+  function checkCapacity(hotel) {
+    hotel.capacity = 0;
+    value.Rooms.forEach(room => {
+      hotel.capacity += Number(room.capacity - room._count.Booking);
+    });
+  }
+
   checkAccommodation(value);
+  checkCapacity(value);
 
   return (
     <UniqueHotel hotelid={value.id} selectedid={selected.id} onClick={handleClick}>
       <div>
         <img src={value.image} alt='Hotel' />
         <HotelName>{value.name}</HotelName>
-        <Accommodation>
+        <DescriptionContainer>
           <span>Tipos de acomodação:</span>
           <AccommodationType>{value.accommodation}</AccommodationType>
-        </Accommodation>
+        </DescriptionContainer>
+        <DescriptionContainer>
+          <span>Vagas disponíveis:</span>
+          <AccommodationType>{value.capacity}</AccommodationType>
+        </DescriptionContainer>
       </div>
     </UniqueHotel>
   );
@@ -77,7 +89,7 @@ const UniqueHotel = styled.div`
   }
 `;
 
-const Accommodation = styled.div`
+const DescriptionContainer = styled.div`
   width: 100%;
   margin-top: -2px;
   display: flex;
@@ -88,7 +100,6 @@ const Accommodation = styled.div`
     color: #3C3C3C;
     font-size: 14px;
     font-weight: 600;
-    font-size: 14px;
   }
 `;
 
