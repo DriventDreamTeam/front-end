@@ -6,11 +6,13 @@ import { ModalityContext } from '../../contexts/modalityContext';
 import useTicketTypes from '../../hooks/api/useTicketTypes';
 import useCreateTicket from '../../hooks/api/useCreateTicket';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 export default function ReserveTicketButton() {
   const { ticketModality, accommodationModality, loading } = useContext(ModalityContext);
   const { ticketTypes } = useTicketTypes();
   const { createTicket } = useCreateTicket();
+  const navigate = useNavigate();
 
   if (ticketModality.type !== 'online' && accommodationModality.type === null) return null;
   const total = Number(ticketModality.price) + Number(accommodationModality.price);
@@ -32,6 +34,7 @@ export default function ReserveTicketButton() {
               }
             }
           });
+          navigate('/dashboard/payment/resume');
         }}
         disabled={loading}
       >

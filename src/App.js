@@ -16,6 +16,7 @@ import { UserProvider } from './contexts/UserContext';
 
 import useToken from './hooks/useToken';
 import { ModalityProvider } from './contexts/modalityContext';
+import Tickets from './pages/Dashboard/Tickets';
 
 export default function App() {
   return (
@@ -39,7 +40,8 @@ export default function App() {
                   }
                 >
                   <Route path="subscription" element={<FillSubscription />} />
-                  <Route path="payment" element={<Payment />} />
+                  <Route path="payment" element={<Tickets />} />
+                  <Route path="payment/resume" element={<Payment />} />
                   <Route path="hotel" element={<Hotel />} />
                   <Route path="activities" element={<Activities />} />
                   <Route path="certificate" element={<Certificate />} />
