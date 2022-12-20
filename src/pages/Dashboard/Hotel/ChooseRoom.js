@@ -5,20 +5,22 @@ import { getHotelRooms, postBooking } from '../../../services/hotelApi';
 import UserContext from '../../../contexts/UserContext';
 
 export default function ChooseRoom({ hotelId, setLoadBrief }) {
-  const [rooms, setRooms] = useState({});
+  const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState('');
   const [isDisabled, setIsDisabled] = useState(false);
+  const [reload, setReload] = useState(true);
   const { userData } = useContext(UserContext);
   const token = userData.token;
 
   useEffect(() => {
     getHotelRooms({ token, hotelId }).then((res) => {
-      setRooms([res.Rooms]);
+      setRooms(res.Rooms);
+      setReload(true);
     });
-  }, [hotelId]);
+  }, []);
 
   function Vacancy({ room }) {
-    let display;
+    let display= <></>;
 
     if (room.capacity > 2) {
       if (room.capacity === room.Booking)
@@ -78,14 +80,16 @@ export default function ChooseRoom({ hotelId, setLoadBrief }) {
   }
 
   function handleClick() {
-    if(!isDisabled) {
+    if (!isDisabled) {
       const body = { roomId: Number(selectedRoom) };
-      postBooking({ token, body }).then((res) => {
-        setLoadBrief(true);
-      }).catch((error) => {
-        setIsDisabled(false);
-      });
-    };
+      postBooking({ token, body })
+        .then((res) => {
+          setLoadBrief(true);
+        })
+        .catch((error) => {
+          setIsDisabled(false);
+        });
+    }
     setIsDisabled(true);
     return;
   }
@@ -94,30 +98,36 @@ export default function ChooseRoom({ hotelId, setLoadBrief }) {
     <Wrapper>
       <h1>Ótima pedida! Agora escolha seu quarto:</h1>
       <Container>
-        {rooms.map((room, index) => {
-          const roomVacancy = room.capacity - room.Booking > 0 ? 'vague' : 'full';
-          const colored = room.capacity - room.Booking > 3 ? 3 : room.capacity - room.Booking;
-          return (
-            <Room
-              key={index}
-              roomVacancy={roomVacancy}
-              roomId={room.id}
-              selectedRoom={selectedRoom}
-              colored={colored}
-              onClick={() => {
-                roomVacancy === 'vague' ? setSelectedRoom(room.id) : setSelectedRoom(selectedRoom);
-              }}
-            >
-              <h2>{room.name}</h2>
-              <div>
-                <Vacancy room={room} />
-              </div>
-            </Room>
-          );
-        })}
+        {reload ? (
+          rooms.map((value, index) => {
+            const roomVacancy = value.capacity - value.Booking > 0 ? 'vague' : 'full';
+            const colored = value.capacity - value.Booking > 3 ? 3 : value.capacity - value.Booking;
+            return (
+              <Room
+                key={index}
+                roomVacancy={roomVacancy}
+                roomId={value.id}
+                selectedRoom={selectedRoom}
+                colored={colored}
+                onClick={() => {
+                  roomVacancy === 'vague' ? setSelectedRoom(value.id) : setSelectedRoom(selectedRoom);
+                }}
+              >
+                <h2>{value.name}</h2>
+                <div>
+                  <Vacancy room={value} />
+                </div>
+              </Room>
+            );
+          })
+        ) : (
+          <>Infelizmente esse hotel não possui quartos cadastrados!</>
+        )}
       </Container>
       <Button
-        onClick={() => {handleClick();}}
+        onClick={() => {
+          handleClick();
+        }}
       >
         RESERVAR QUARTO
       </Button>

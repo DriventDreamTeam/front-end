@@ -1,10 +1,11 @@
 import { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import UserContext from '../../../contexts/UserContext';
-import { getHotels } from '../../../services/hotelApi';
+import { getHotels, getBooking } from '../../../services/hotelApi';
 import Container from './Container';
 import Typography from '@material-ui/core/Typography';
 import ChooseRoom from './ChooseRoom';
+import HotelBrief from './HotelBrief';
 
 export default function Hotel() {
   const [hotels, setHotels] = useState([]);
@@ -16,15 +17,21 @@ export default function Hotel() {
     getHotels(userData.token).then((res) => {
       setHotels([...res]);
     });
+
+    getBooking( userData.token ).then((res) => {
+      setLoadBrief(true);
+    });
   }, []);
 
   return (
     <>
       {loadBrief ? (
-        <ChooseRoom hotelId={selected.id} setLoadBrief={setLoadBrief} />
-      ) : (
         <>
           <StyledTypography variant="h4">Escolha de quarto e hotel</StyledTypography>
+          <HotelBrief />
+        </>
+      ) : (
+        <>
           {hotels.length === 0 ? (
             <Wrapper>
               <Warning>
