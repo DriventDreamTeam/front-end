@@ -1,14 +1,14 @@
 export default function getTicketType(ticket) {
-  const { TicketType }  = ticket;
+  const { TicketType } = ticket;
   const ticketData = { price: TicketType?.price };
-  if(TicketType?.isRemote) {
+  if (TicketType?.isRemote) {
     return { ...ticketData, title: 'Online' };
-  } else if(TicketType?.includesHotel) {
+  } else if (TicketType?.includesHotel) {
     return { ...ticketData, title: 'Presencial + Com Hotel' };
   } else {
-    return { ...ticketData, title: 'Presencial + Sem Hotel' }; 
+    return { ...ticketData, title: 'Presencial + Sem Hotel' };
   }
-};
+}
 
 // function formatPrice(number)
 // {
