@@ -18,7 +18,7 @@ export default function TicketOption({ id, title, price }) {
 const Modality = styled.div`
   width: 145px;
   height: 145px;
-  border-radius: 21px;
+  border-radius: 20px;
   border: 1px solid #cecece;
   background-color: ${(props) => props.bgColor};
   display: flex;
