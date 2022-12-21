@@ -6,22 +6,33 @@ import Container from './Container';
 import Typography from '@material-ui/core/Typography';
 import ChooseRoom from './ChooseRoom';
 import HotelBrief from './HotelBrief';
+import { getPayment } from '../../../services/paymentsApi';
+import useTicket from '../../../hooks/api/useTicket';
+import UnauthorizedAccessMessage from '../../../components/UnauthorizedMessage';
 
 export default function Hotel() {
   const [hotels, setHotels] = useState([]);
+  const [payment, setPayment] = useState([]);
   const [selected, setSelected] = useState({});
   const [loadBrief, setLoadBrief] = useState(false);
   const { userData } = useContext(UserContext);
+  const { ticket } = useTicket();
+
+  const unauthorizedMessagePayment = 'Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem';
 
   useEffect(() => {
     getHotels(userData.token).then((res) => {
       setHotels([...res]);
     });
-
+    if(ticket) {
+      getPayment(userData.token, ticket?.id).then((res) => {
+        setPayment({ ...res });
+      });
+    }
     getBooking( userData.token ).then((res) => {
       setLoadBrief(true);
     });
-  }, []);
+  }, [ticket]);
 
   return (
     <>
@@ -30,32 +41,34 @@ export default function Hotel() {
           <StyledTypography variant="h4">Escolha de quarto e hotel</StyledTypography>
           <HotelBrief />
         </>
-      ) : (
-        <>
-          {hotels.length === 0 ? (
-            <Wrapper>
-              <Warning>
-                <span>Sua modalidade de ingresso não inclui hospedagem</span>
-              </Warning>
-              <Warning>
-                <span>Prossiga para a escolha de atividades</span>
-              </Warning>
-            </Wrapper>
-          ) : (
-            <>
-              <ChooseHotel>
-                <span>Primeiro, escolha o seu hotel</span>
-              </ChooseHotel>
-              <Hotels>
-                {hotels.map((value, index) => (
-                  <Container value={value} selected={selected} setSelected={setSelected} key={index} />
-                ))}
-              </Hotels>
-            </>
-          )}
-          {selected.id ? <ChooseRoom hotelId={selected.id} setLoadBrief={setLoadBrief} /> : <></>}
-        </>
-      )}
+      ) : Object.keys(payment).length === 0|| !ticket ? <UnauthorizedAccessMessage text={unauthorizedMessagePayment} /> : 
+        (
+          <>
+            {hotels.length === 0 ? (
+              <Wrapper>
+                <Warning>
+                  <span>Sua modalidade de ingresso não inclui hospedagem</span>
+                </Warning>
+                <Warning>
+                  <span>Prossiga para a escolha de atividades</span>
+                </Warning>
+              </Wrapper>
+            ) : (
+              <>
+                <ChooseHotel>
+                  <span>Primeiro, escolha o seu hotel</span>
+                </ChooseHotel>
+                <Hotels>
+                  {hotels.map((value, index) => (
+                    <Container value={value} selected={selected} setSelected={setSelected} key={index} />
+                  ))}
+                </Hotels>
+              </>
+            )}
+            {selected.id ? <ChooseRoom hotelId={selected.id} setLoadBrief={setLoadBrief} /> : <></>}
+          </>
+        )
+      }
     </>
   );
 }
