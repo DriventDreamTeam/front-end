@@ -2,19 +2,22 @@ import styled from 'styled-components';
 import { useState, useContext, useEffect } from 'react';
 import { getBooking } from '../../../services/hotelApi';
 import UserContext from '../../../contexts/UserContext';
+import SelectRoom from './SelectRoom';
 
-export default function ChooseRoom() {
+export default function HotelBrief({ hotelId, setLoadBrief, loadBrief }) {
   const [myBooking, setMyBooking] = useState({});
   const { userData } = useContext(UserContext);
+  const [changeRoom, setChangeRoom] = useState(false);
   const token = userData.token;
 
   useEffect(() => {
-    getBooking( token ).then((res) => {
+    getBooking(token).then((res) => {
       setMyBooking(res);
     });
   }, []);
 
   function handleClick() {
+    setChangeRoom(!changeRoom);
   }
 
   return (
@@ -28,20 +31,28 @@ export default function ChooseRoom() {
             <h3>Quarto reservado</h3>
             <h4>
               {myBooking.Room?.name}
-              {myBooking.Room?.capacity === 1 ? ' (Single)' : myBooking.Room?.capacity === 2 ? ' (Double)' : ' (Triple)'}
+              {myBooking.Room?.capacity === 1
+                ? ' (Single)'
+                : myBooking.Room?.capacity === 2
+                  ? ' (Double)'
+                  : ' (Triple)'}
             </h4>
             <h3>Pessoas no seu quarto</h3>
             <h4>{myBooking.Room?.Booking === 1 ? 'Apenas você' : `Você e mais ${myBooking.Room?.Booking - 1}`}</h4>
           </div>
         </Booking>
       </Container>
-      <Button
-        onClick={() => {
-          handleClick();
-        }}
-      >
-        TROCAR DE QUARTO
-      </Button>
+      {changeRoom ? (
+        <SelectRoom hotelId={myBooking.Room?.Hotel.id} setLoadBrief={setLoadBrief} loadBrief={loadBrief} changeRoom={changeRoom} myBooking={myBooking}/>
+      ) : (
+        <Button
+          onClick={() => {
+            handleClick();
+          }}
+        >
+          TROCAR DE QUARTO
+        </Button>
+      )}
     </Wrapper>
   );
 }
@@ -76,11 +87,12 @@ const Booking = styled.div`
   justify-content: flex-start;
   flex-direction: column;
   padding: 15px;
+  margin-bottom: 45px;
   img {
     width: 100%;
     height: 45%;
   }
-  div{
+  div {
     margin-top: 10px;
   }
   h2 {
@@ -113,7 +125,6 @@ const Booking = styled.div`
 const Button = styled.div`
   width: 182px;
   height: 37px;
-  margin: 45px 0;
   display: flex;
   justify-content: center;
   align-items: center;

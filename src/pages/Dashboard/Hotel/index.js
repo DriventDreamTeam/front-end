@@ -32,43 +32,46 @@ export default function Hotel() {
     getBooking( userData.token ).then((res) => {
       setLoadBrief(true);
     });
-  }, [ticket]);
+    if(!loadBrief) {
+      getBooking( userData.token ).then((res) => {
+        setLoadBrief(true);
+      });
+    }
+  }, [loadBrief, ticket]);
 
   return (
     <>
       {loadBrief ? (
         <>
           <StyledTypography variant="h4">Escolha de quarto e hotel</StyledTypography>
-          <HotelBrief />
+          <HotelBrief hotelId={selected.id} setLoadBrief={setLoadBrief} loadBrief={loadBrief} />
         </>
-      ) : Object.keys(payment).length === 0|| !ticket ? <UnauthorizedAccessMessage text={unauthorizedMessagePayment} /> : 
-        (
-          <>
-            {hotels.length === 0 ? (
-              <Wrapper>
-                <Warning>
-                  <span>Sua modalidade de ingresso não inclui hospedagem</span>
-                </Warning>
-                <Warning>
-                  <span>Prossiga para a escolha de atividades</span>
-                </Warning>
-              </Wrapper>
-            ) : (
-              <>
-                <ChooseHotel>
-                  <span>Primeiro, escolha o seu hotel</span>
-                </ChooseHotel>
-                <Hotels>
-                  {hotels.map((value, index) => (
-                    <Container value={value} selected={selected} setSelected={setSelected} key={index} />
-                  ))}
-                </Hotels>
-              </>
-            )}
-            {selected.id ? <ChooseRoom hotelId={selected.id} setLoadBrief={setLoadBrief} /> : <></>}
-          </>
-        )
-      }
+      ) : Object.keys(payment).length === 0|| !ticket ? <UnauthorizedAccessMessage text={unauthorizedMessagePayment} /> : (
+        <>
+          {hotels.length === 0 ? (
+            <Wrapper>
+              <Warning>
+                <span>Sua modalidade de ingresso não inclui hospedagem</span>
+              </Warning>
+              <Warning>
+                <span>Prossiga para a escolha de atividades</span>
+              </Warning>
+            </Wrapper>
+          ) : (
+            <>
+              <ChooseHotel>
+                <span>Primeiro, escolha o seu hotel</span>
+              </ChooseHotel>
+              <Hotels>
+                {hotels.map((value, index) => (
+                  <Container value={value} selected={selected} setSelected={setSelected} key={index} />
+                ))}
+              </Hotels>
+            </>
+          )}
+          {selected.id ? <ChooseRoom hotelId={selected.id} setLoadBrief={setLoadBrief} loadBrief={loadBrief} /> : <></>}
+        </>
+      )}
     </>
   );
 }
