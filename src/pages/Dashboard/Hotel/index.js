@@ -18,17 +18,19 @@ export default function Hotel() {
       setHotels([...res]);
     });
 
-    getBooking( userData.token ).then((res) => {
-      setLoadBrief(true);
-    });
-  }, []);
+    if(!loadBrief) {
+      getBooking( userData.token ).then((res) => {
+        setLoadBrief(true);
+      });
+    }
+  }, [loadBrief]);
 
   return (
     <>
       {loadBrief ? (
         <>
           <StyledTypography variant="h4">Escolha de quarto e hotel</StyledTypography>
-          <HotelBrief />
+          <HotelBrief hotelId={selected.id} setLoadBrief={setLoadBrief} loadBrief={loadBrief} />
         </>
       ) : (
         <>
@@ -53,7 +55,7 @@ export default function Hotel() {
               </Hotels>
             </>
           )}
-          {selected.id ? <ChooseRoom hotelId={selected.id} setLoadBrief={setLoadBrief} /> : <></>}
+          {selected.id ? <ChooseRoom hotelId={selected.id} setLoadBrief={setLoadBrief} loadBrief={loadBrief} /> : <></>}
         </>
       )}
     </>
