@@ -1,44 +1,59 @@
 import { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import UserContext from '../../../contexts/UserContext';
-import { getHotels } from '../../../services/hotelApi';
+import { getHotels, getBooking } from '../../../services/hotelApi';
 import Container from './Container';
 import Typography from '@material-ui/core/Typography';
+import ChooseRoom from './ChooseRoom';
+import HotelBrief from './HotelBrief';
 
 export default function Hotel() {
   const [hotels, setHotels] = useState([]);
   const [selected, setSelected] = useState({});
+  const [loadBrief, setLoadBrief] = useState(false);
   const { userData } = useContext(UserContext);
 
   useEffect(() => {
     getHotels(userData.token).then((res) => {
       setHotels([...res]);
     });
+
+    getBooking( userData.token ).then((res) => {
+      setLoadBrief(true);
+    });
   }, []);
 
   return (
     <>
-      <StyledTypography variant="h4">Escolha de quarto e hotel</StyledTypography>
-      
-      {hotels.length === 0 ? (
-        <Wrapper>
-          <Warning>
-            <span>Sua modalidade de ingresso não inclui hospedagem</span>
-          </Warning>
-          <Warning>
-            <span>Prossiga para a escolha de atividades</span>
-          </Warning>
-        </Wrapper>
+      {loadBrief ? (
+        <>
+          <StyledTypography variant="h4">Escolha de quarto e hotel</StyledTypography>
+          <HotelBrief />
+        </>
       ) : (
         <>
-          <ChooseHotel>
-            <span>Primeiro, escolha o seu hotel</span>
-          </ChooseHotel>
-          <Hotels>
-            {hotels.map((value, index) => (
-              <Container value={value} selected={selected} setSelected={setSelected} key={index} />
-            ))}
-          </Hotels>
+          {hotels.length === 0 ? (
+            <Wrapper>
+              <Warning>
+                <span>Sua modalidade de ingresso não inclui hospedagem</span>
+              </Warning>
+              <Warning>
+                <span>Prossiga para a escolha de atividades</span>
+              </Warning>
+            </Wrapper>
+          ) : (
+            <>
+              <ChooseHotel>
+                <span>Primeiro, escolha o seu hotel</span>
+              </ChooseHotel>
+              <Hotels>
+                {hotels.map((value, index) => (
+                  <Container value={value} selected={selected} setSelected={setSelected} key={index} />
+                ))}
+              </Hotels>
+            </>
+          )}
+          {selected.id ? <ChooseRoom hotelId={selected.id} setLoadBrief={setLoadBrief} /> : <></>}
         </>
       )}
     </>
@@ -46,7 +61,7 @@ export default function Hotel() {
 }
 
 const StyledTypography = styled(Typography)`
-  margin-bottom: 20px!important;
+  margin-bottom: 20px !important;
 `;
 
 const Wrapper = styled.div`
@@ -58,7 +73,7 @@ const Wrapper = styled.div`
 `;
 
 const Warning = styled(Typography)`
-  color: #8E8E8E;
+  color: #8e8e8e;
 
   & > span {
     font-size: 18px;
