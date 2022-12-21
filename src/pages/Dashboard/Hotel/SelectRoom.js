@@ -93,7 +93,6 @@ export default function SelectRoom({ hotelId, setLoadBrief, loadBrief, changeRoo
           setLoadBrief(false);
         })
         .catch((error) => {
-          console.log(error);
           setIsDisabled(false);
         });
       return;
