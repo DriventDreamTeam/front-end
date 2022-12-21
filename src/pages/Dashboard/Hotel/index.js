@@ -6,24 +6,38 @@ import Container from './Container';
 import Typography from '@material-ui/core/Typography';
 import ChooseRoom from './ChooseRoom';
 import HotelBrief from './HotelBrief';
+import { getPayment } from '../../../services/paymentsApi';
+import useTicket from '../../../hooks/api/useTicket';
+import UnauthorizedAccessMessage from '../../../components/UnauthorizedMessage';
 
 export default function Hotel() {
   const [hotels, setHotels] = useState([]);
+  const [payment, setPayment] = useState([]);
   const [selected, setSelected] = useState({});
   const [loadBrief, setLoadBrief] = useState(false);
   const { userData } = useContext(UserContext);
+  const { ticket } = useTicket();
+
+  const unauthorizedMessagePayment = 'Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem';
 
   useEffect(() => {
     getHotels(userData.token).then((res) => {
       setHotels([...res]);
     });
-
+    if(ticket) {
+      getPayment(userData.token, ticket?.id).then((res) => {
+        setPayment({ ...res });
+      });
+    }
+    getBooking( userData.token ).then((res) => {
+      setLoadBrief(true);
+    });
     if(!loadBrief) {
       getBooking( userData.token ).then((res) => {
         setLoadBrief(true);
       });
     }
-  }, [loadBrief]);
+  }, [loadBrief, ticket]);
 
   return (
     <>
@@ -32,7 +46,7 @@ export default function Hotel() {
           <StyledTypography variant="h4">Escolha de quarto e hotel</StyledTypography>
           <HotelBrief hotelId={selected.id} setLoadBrief={setLoadBrief} loadBrief={loadBrief} />
         </>
-      ) : (
+      ) : Object.keys(payment).length === 0|| !ticket ? <UnauthorizedAccessMessage text={unauthorizedMessagePayment} /> : (
         <>
           {hotels.length === 0 ? (
             <Wrapper>
