@@ -18,7 +18,7 @@ export default function SelectRoom({ hotelId, setLoadBrief, loadBrief, changeRoo
       setRooms(res.Rooms);
       setReload(true);
     });
-  }, []);
+  }, [hotelId]);
 
   function Vacancy({ room }) {
     let display = <></>;
