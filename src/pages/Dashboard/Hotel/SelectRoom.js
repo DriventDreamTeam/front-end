@@ -190,6 +190,9 @@ const Room = styled.div`
     }
   }
   cursor: ${(props) => (props.roomVacancy === 'full' ? '' : 'pointer')};
+  @media (max-width: 600px) {
+    width: 45%;
+  }
 `;
 
 const Button = styled.div`
