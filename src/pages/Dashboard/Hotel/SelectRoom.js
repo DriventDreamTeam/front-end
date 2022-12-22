@@ -18,7 +18,7 @@ export default function SelectRoom({ hotelId, setLoadBrief, loadBrief, changeRoo
       setRooms(res.Rooms);
       setReload(true);
     });
-  }, []);
+  }, [hotelId]);
 
   function Vacancy({ room }) {
     let display = <></>;
@@ -190,6 +190,9 @@ const Room = styled.div`
     }
   }
   cursor: ${(props) => (props.roomVacancy === 'full' ? '' : 'pointer')};
+  @media (max-width: 600px) {
+    width: 45%;
+  }
 `;
 
 const Button = styled.div`
