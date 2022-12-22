@@ -9,17 +9,29 @@ export default function Container({ value, selected, setSelected }) {
   }
 
   function checkAccommodation(hotel) {
-    value.Rooms.forEach(room => {
-      if(room.capacity - room._count.Booking === 1) {
-        hotel.accommodation = 'Single';
+    const ACCOMMODATION = {
+      single: 'Single',
+      double: 'Single e Double',
+      triple: 'Single, Double e Triple'
+    };
+    value.Rooms.every(room => {
+      if(!hotel.accommodation && room.capacity - room._count.Booking === 1) {
+        hotel.accommodation = ACCOMMODATION.single;
+        return true;
       }
-      if(room.capacity - room._count.Booking === 2) {
-        hotel.accommodation = 'Single e Double';
+      if(hotel.accommodaation !== ACCOMMODATION.triple && room.capacity - room._count.Booking === 2) {
+        hotel.accommodation = ACCOMMODATION.double;
+        return true;
       }
       if(room.capacity - room._count.Booking > 2) {
-        hotel.accommodation = 'Single, Double e Triple';
+        hotel.accommodation = ACCOMMODATION.triple;
+        return false;
       }
+      return true;
     });
+    if(!hotel.accommodation) {
+      hotel.accommodation = '';
+    }
   }
 
   function checkCapacity(hotel) {
