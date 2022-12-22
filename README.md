@@ -12,7 +12,7 @@ Driven.t is a web browser application with which you can manage every single asp
 2. Install all dependencies
 
 ```bash
-npm i
+npm i --legacy-peer-deps
 ```
 
 3. Populate `.env` file based on `.env.example`. `REACT_APP_API_BASE_URL` should point to your API server (driven.t-back)
