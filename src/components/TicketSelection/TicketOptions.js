@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import TicketOption from './TicketOption';
-import { Typography } from '@material-ui/core';
+import { Subtitle } from '../utils';
 
 export default function TicketOptions() {
   return (
@@ -25,10 +25,4 @@ const Options = styled.div`
     display: flex;
     column-gap: 25px;
   }
-`;
-
-const Subtitle = styled(Typography)`
-  color: #8e8e8e;
-  font-size: 20px !important;
-  font-family: 'Roboto', sans-serif;
 `;
