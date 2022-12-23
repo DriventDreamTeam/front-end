@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from 'react';
-import Container from '../../../components/TicketPayment/Container';
+import Container from '../../../components/TicketPayment/PaymentResume';
 import UserContext from '../../../contexts/UserContext';
 import { getTickets } from '../../../services/ticketsApi';
 
@@ -11,7 +11,6 @@ export default function Payment() {
     getTickets(userData?.token).then((res) => {
       setTicket({ ...res });
     }).catch(error => {
-      console.log(error.status);
     });
   }, []);
   return (

@@ -9,6 +9,7 @@ import HotelBrief from './HotelBrief';
 import { getPayment } from '../../../services/paymentsApi';
 import useTicket from '../../../hooks/api/useTicket';
 import UnauthorizedAccessMessage from '../../../components/UnauthorizedMessage';
+import { Title } from '../../../components/utils';
 
 export default function Hotel() {
   const [hotels, setHotels] = useState([]);
@@ -43,7 +44,7 @@ export default function Hotel() {
     <>
       {loadBrief ? (
         <>
-          <StyledTypography variant="h4">Escolha de quarto e hotel</StyledTypography>
+          <Title variant="h4">Escolha de quarto e hotel </Title>
           <HotelBrief hotelId={selected.id} setLoadBrief={setLoadBrief} loadBrief={loadBrief} />
         </>
       ) : Object.keys(payment).length === 0|| !ticket ? <UnauthorizedAccessMessage text={unauthorizedMessagePayment} /> : (
@@ -59,6 +60,7 @@ export default function Hotel() {
             </Wrapper>
           ) : (
             <>
+              <Title variant="h4">Escolha de quarto e hotel </Title>
               <ChooseHotel>
                 <span>Primeiro, escolha o seu hotel</span>
               </ChooseHotel>
@@ -75,10 +77,6 @@ export default function Hotel() {
     </>
   );
 }
-
-const StyledTypography = styled(Typography)`
-  margin-bottom: 20px !important;
-`;
 
 const Wrapper = styled.div`
   height: 80%;
