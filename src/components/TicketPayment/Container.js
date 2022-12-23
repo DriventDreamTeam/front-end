@@ -1,19 +1,20 @@
 import { useContext } from 'react';
 import styled from 'styled-components';
-import UserContext from '../../../contexts/UserContext';
-import PaymentForm from './CreditCard';
+import UserContext from '../../contexts/UserContext';
 import getTicketType from './getTicketType';
 import { CheckmarkCircle } from 'react-ionicons';
+import PaymentForm from './CreditCard';
+import { Title } from '../TicketSelection';
 
 export default function Container({ ticket, setTicket }) {
   let ticketData = {};
   const { userData } = useContext(UserContext);
-  if (ticket) {
+  if (ticket.length!==0) {
     ticketData = getTicketType(ticket);
   }
   return (
     <>
-      <PageTitle>Ingresso e pagamento</PageTitle>
+      <Title variant="h4">Ingresso e Pagamento</Title>
       <TicketTitle>Ingresso escolhido</TicketTitle>
       <TicketTypeContainer>
         <TicketTypeName>{ticketData?.title}</TicketTypeName>
@@ -45,17 +46,6 @@ export default function Container({ ticket, setTicket }) {
     </>
   );
 }
-
-const PageTitle = styled.h1`
-  font-family: Roboto;
-  font-size: 34px;
-  font-weight: 400;
-  line-height: 40px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: #000000;
-  margin-bottom: 15px;
-`;
 
 const TicketTitle = styled.h1`
   font-family: Roboto;

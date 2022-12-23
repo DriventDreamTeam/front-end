@@ -9,11 +9,3 @@ export default function getTicketType(ticket) {
     return { ...ticketData, title: 'Presencial + Sem Hotel' };
   }
 }
-
-// function formatPrice(number)
-// {
-// //   const formatted = new Intl.NumberFormat('pt-BR');
-// //   return formatted.format(number);
-//   const formatedPrice = number?.toFixed(2).replace('.', ',');
-//   return formatedPrice;
-// }
