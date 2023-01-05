@@ -6,6 +6,7 @@ import AuthLayout from '../../layouts/Auth';
 
 import Input from '../../components/Form/Input';
 import Button from '../../components/Form/Button';
+import GithubButton from '../../components/Form/GithubButton';
 import Link from '../../components/Link';
 import { Row, Title, Label } from '../../components/Auth';
 
@@ -13,6 +14,8 @@ import EventInfoContext from '../../contexts/EventInfoContext';
 import UserContext from '../../contexts/UserContext';
 
 import useSignIn from '../../hooks/api/useSignIn';
+
+import { githubSignIn } from '../../services/githubAuth';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -38,6 +41,20 @@ export default function SignIn() {
     }
   } 
 
+  async function githubSubmit() {
+    try {
+      const githubData = await githubSignIn();
+      const { providerId: provider } = githubData;
+      const { email, uid: password } = githubData.user;
+      const userData = await signIn(email, password, provider);
+      setUserData(userData);
+      toast('Login realizado com sucesso!');
+      navigate('/dashboard');
+    } catch (err) {
+      toast('Não foi possível fazer o login!');
+    }
+  }
+
   return (
     <AuthLayout background={eventInfo.backgroundImageUrl}>
       <Row>
@@ -51,6 +68,7 @@ export default function SignIn() {
           <Input label="Senha" type="password" fullWidth value={password} onChange={e => setPassword(e.target.value)} />
           <Button type="submit" color="primary" fullWidth disabled={loadingSignIn}>Entrar</Button>
         </form>
+        <GithubButton color="primary" onClick={githubSubmit} fullWidth disabled={loadingSignIn}>Github</GithubButton>
       </Row>
       <Row>
         <Link to="/enroll">Não possui login? Inscreva-se</Link>
