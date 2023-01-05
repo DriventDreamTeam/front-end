@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { BsPerson, BsPersonFill } from 'react-icons/bs';
-import { getHotelRooms, postBooking, putBooking } from '../../../services/hotelApi';
-import UserContext from '../../../contexts/UserContext';
+import { getHotelRooms, postBooking, putBooking } from '../../services/hotelApi';
+import UserContext from '../../contexts/UserContext';
 import { useContext, useEffect, useState } from 'react';
 
 export default function SelectRoom({ hotelId, setLoadBrief, loadBrief, changeRoom, myBooking }) {

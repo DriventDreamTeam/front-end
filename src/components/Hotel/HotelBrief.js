@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState, useContext, useEffect } from 'react';
-import { getBooking } from '../../../services/hotelApi';
-import UserContext from '../../../contexts/UserContext';
+import { getBooking } from '../../services/hotelApi';
+import UserContext from '../../contexts/UserContext';
 import SelectRoom from './SelectRoom';
 
 export default function HotelBrief({ hotelId, setLoadBrief, loadBrief }) {
