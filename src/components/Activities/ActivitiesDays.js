@@ -3,9 +3,8 @@ import styled from 'styled-components';
 import UserContext from '../../contexts/UserContext';
 import { getDays } from '../../services/activitiesApi';
 
-export default function ChooseDay() {
+export default function ChooseDay({ selectedDay, setSelectedDay }) {
   const [reload, setReload] = useState(false);
-  const [selectedDay, setSelectedDay] = useState(0);
   const [days, setDays] = useState([]);
   const { userData } = useContext(UserContext);
   const token = userData.token;
@@ -19,7 +18,6 @@ export default function ChooseDay() {
 
   return (
     <Wrapper>
-      <h1>Escolha de atividades</h1>
       {reload ? (
         <Container>
           {days.map((value, index) => {
@@ -46,6 +44,7 @@ export default function ChooseDay() {
 
 const Wrapper = styled.div`
   width: 100%;
+  cursor: pointer;
   h1 {
     margin: 35px 0;
     font-family: 'Roboto';

@@ -1,5 +1,5 @@
-import ChooseDay from '../../../components/Activities/ActivitiesDays.js';
+import ActivitiesSection from '../../../components/Activities';
 
 export default function Activities() {
-  return <ChooseDay />;
+  return <ActivitiesSection />;
 }
