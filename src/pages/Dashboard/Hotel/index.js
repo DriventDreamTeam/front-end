@@ -10,6 +10,7 @@ import { getPayment } from '../../../services/paymentsApi';
 import useTicket from '../../../hooks/api/useTicket';
 import UnauthorizedAccessMessage from '../../../components/UnauthorizedMessage';
 import { Title } from '../../../components/utils';
+import MyLoader from '../../../components/Loading';
 
 export default function Hotel() {
   const [hotels, setHotels] = useState([]);
@@ -17,6 +18,7 @@ export default function Hotel() {
   const [selected, setSelected] = useState({});
   const [loadBrief, setLoadBrief] = useState(false);
   const { userData } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
   const { ticket } = useTicket();
 
   const unauthorizedMessagePayment = 'Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem';
@@ -25,11 +27,6 @@ export default function Hotel() {
     getHotels(userData.token).then((res) => {
       setHotels([...res]);
     });
-    if (ticket) {
-      getPayment(userData.token, ticket?.id).then((res) => {
-        setPayment({ ...res });
-      });
-    }
     getBooking(userData.token).then((res) => {
       setLoadBrief(true);
     });
@@ -38,11 +35,21 @@ export default function Hotel() {
         setLoadBrief(true);
       });
     }
+    if (ticket) {
+      getPayment(userData.token, ticket?.id).then((res) => {
+        setPayment({ ...res });
+        setLoading(false);
+      });
+    }
   }, [loadBrief, ticket]);
 
-  const doesNotexistPayment = (Object.keys(payment).length === 0 || !ticket);
+  if (loading) {
+    return <MyLoader />;
+  }
 
-  const doesNotIncludeHotel = (hotels.length === 0);
+  const doesNotexistPayment = Object.keys(payment).length === 0 || !ticket;
+
+  const doesNotIncludeHotel = hotels.length === 0;
 
   return (
     <>
