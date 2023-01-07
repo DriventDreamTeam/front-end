@@ -43,11 +43,11 @@ export default function Hotel() {
     }
   }, [loadBrief, ticket]);
 
-  if (loading) {
+  const doesNotExistPayment = Object.keys(payment).length === 0 || !ticket;
+
+  if (loading && !doesNotExistPayment) {
     return <MyLoader />;
   }
-
-  const doesNotexistPayment = Object.keys(payment).length === 0 || !ticket;
 
   const doesNotIncludeHotel = hotels.length === 0;
 
@@ -58,7 +58,7 @@ export default function Hotel() {
         <>
           <HotelBrief hotelId={selected.id} setLoadBrief={setLoadBrief} loadBrief={loadBrief} />
         </>
-      ) : doesNotexistPayment ? (
+      ) : doesNotExistPayment ? (
         <UnauthorizedAccessMessage text={unauthorizedMessagePayment} />
       ) : (
         <>
