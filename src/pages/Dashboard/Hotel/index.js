@@ -25,20 +25,24 @@ export default function Hotel() {
     getHotels(userData.token).then((res) => {
       setHotels([...res]);
     });
-    if(ticket) {
+    if (ticket) {
       getPayment(userData.token, ticket?.id).then((res) => {
         setPayment({ ...res });
       });
     }
-    getBooking( userData.token ).then((res) => {
+    getBooking(userData.token).then((res) => {
       setLoadBrief(true);
     });
-    if(!loadBrief) {
-      getBooking( userData.token ).then((res) => {
+    if (!loadBrief) {
+      getBooking(userData.token).then((res) => {
         setLoadBrief(true);
       });
     }
   }, [loadBrief, ticket]);
+
+  const doesNotexistPayment = (Object.keys(payment).length === 0 || !ticket);
+
+  const doesNotIncludeHotel = (hotels.length === 0);
 
   return (
     <>
@@ -47,9 +51,11 @@ export default function Hotel() {
         <>
           <HotelBrief hotelId={selected.id} setLoadBrief={setLoadBrief} loadBrief={loadBrief} />
         </>
-      ) : Object.keys(payment).length === 0|| !ticket ? <UnauthorizedAccessMessage text={unauthorizedMessagePayment} /> : (
+      ) : doesNotexistPayment ? (
+        <UnauthorizedAccessMessage text={unauthorizedMessagePayment} />
+      ) : (
         <>
-          {hotels.length === 0 ? (
+          {doesNotIncludeHotel ? (
             <Wrapper>
               <Warning>
                 <span>Sua modalidade de ingresso não inclui hospedagem</span>
