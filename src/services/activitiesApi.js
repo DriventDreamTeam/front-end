@@ -9,3 +9,13 @@ export async function getDays({ token }) {
 
   return response.data;
 }
+
+export async function getActivitiesByDateId(token, dateId) {
+  const response = await api.get(`/activities/${dateId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+}
