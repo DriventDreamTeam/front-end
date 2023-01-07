@@ -42,9 +42,9 @@ export default function Hotel() {
 
   return (
     <>
+      <Title variant="h4">Escolha de hotel e quarto</Title>
       {loadBrief ? (
         <>
-          <Title variant="h4">Escolha de quarto e hotel </Title>
           <HotelBrief hotelId={selected.id} setLoadBrief={setLoadBrief} loadBrief={loadBrief} />
         </>
       ) : Object.keys(payment).length === 0|| !ticket ? <UnauthorizedAccessMessage text={unauthorizedMessagePayment} /> : (
@@ -60,7 +60,6 @@ export default function Hotel() {
             </Wrapper>
           ) : (
             <>
-              <Title variant="h4">Escolha de quarto e hotel </Title>
               <ChooseHotel>
                 <span>Primeiro, escolha o seu hotel</span>
               </ChooseHotel>
