@@ -1,7 +1,7 @@
 import React from 'react';
-import Cards from 'react-credit-cards';
+import Cards from 'react-credit-cards-2';
 import styled from 'styled-components';
-import 'react-credit-cards/es/styles-compiled.css';
+import 'react-credit-cards-2/es/styles-compiled.css';
 import { postPayment } from '../../services/paymentsApi';
 
 export default class PaymentForm extends React.Component {
