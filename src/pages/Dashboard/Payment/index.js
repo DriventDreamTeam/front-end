@@ -8,14 +8,13 @@ export default function Payment() {
   const [ticket, setTicket] = useState([]);
 
   useEffect(() => {
-    getTickets(userData?.token).then((res) => {
-      setTicket({ ...res });
-    }).catch(error => {
-    });
-  }, []);
-  return (
-    <>
-      {ticket.length!==0 &&  <Container ticket={ticket} setTicket={setTicket}></Container>}
-    </>
-  );
+    if (ticket.length === 0) {
+      getTickets(userData?.token)
+        .then((res) => {
+          setTicket({ ...res });
+        })
+        .catch((error) => {});
+    }
+  }, [ticket]);
+  return <>{ticket.length !== 0 && <Container ticket={ticket} setTicket={setTicket}></Container>}</>;
 }

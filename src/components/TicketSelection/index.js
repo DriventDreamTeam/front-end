@@ -7,7 +7,6 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getTickets } from '../../services/ticketsApi';
 import UserContext from '../../contexts/UserContext';
-import { Title } from '../utils';
 
 export default function PaymentInformation() {
   const { enrollment } = useEnrollment();
@@ -28,7 +27,6 @@ export default function PaymentInformation() {
 
   return (  
     <>
-      <Title variant="h4">Ingresso e Pagamento</Title>
       <MuiPickersUtilsProvider utils={DateFnsUtils}></MuiPickersUtilsProvider>
       {ticket && (enrollment ? content : <UnauthorizedAccessMessage text={unauthorizedMessage} />)}
     </>
