@@ -6,18 +6,17 @@ import UnauthorizedAccessMessage from '../../../components/UnauthorizedMessage';
 import UserContext from '../../../contexts/UserContext';
 import useTicket from '../../../hooks/api/useTicket';
 import { getPayment } from '../../../services/paymentsApi';
-import { getTicketTypes } from '../../../services/ticketApi';
 
 export default function Activities() {
   const { userData } = useContext(UserContext);
   const [payment, setPayment] = useState({});
-  const [ticketType, setTicketType] = useState([]);
   const [isRemote, setIsRemote] = useState(false);
   const [loading, setLoading] = useState(true);
   const { ticket } = useTicket();
 
-  const unauthorizedMessagePayment = 'Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem';
-  const isRemoteMessage = 'Seu ticket é remoto, não há necessidade de escolher as atividades';
+  const unauthorizedMessagePayment = 'Você precisa ter confirmado pagamento antes de fazer a escolha de atividades';
+  const isRemoteMessage =
+    'Sua modalidade de ingresso não necessita escolher atividade. Você terá acesso a todas as atividades';
 
   useEffect(() => {
     if (ticket) {
@@ -25,34 +24,24 @@ export default function Activities() {
         .then((res) => {
           setPayment({ ...res });
           setLoading(false);
+          const ticketType = ticket?.TicketType?.isRemote;
+          setIsRemote(ticketType);
         })
         .catch((error) => {});
-        
-      getTicketTypes(userData?.token)
-        .then((res) => {
-          setTicketType({ ...res });
-        })
-        .catch((error) => {});
+    } else {
+      setLoading(false);
     }
   }, [ticket]);
 
-  const existsPayment = Object.keys(payment).length !== 0;
-
-  // if (ticket && ticketType) {
-  //   const type = ticketType.filter((value) => value.id === ticket.id);
-  //   if (type[0]?.price === 100) {
-  //   }
-  //   setIsRemote(true);
-  // }
-
-  if (loading && existsPayment) {
+  if (loading) {
     return <MyLoader />;
   }
+  const existsPayment = Object.keys(payment).length !== 0;
 
   return (
     <Section>
       <Section.Title>Escolha de Atividades</Section.Title>
-      {existsPayment ? (
+      {existsPayment && !isRemote ? (
         <ActivitiesSection />
       ) : (
         <UnauthorizedAccessMessage text={isRemote ? isRemoteMessage : unauthorizedMessagePayment} />
