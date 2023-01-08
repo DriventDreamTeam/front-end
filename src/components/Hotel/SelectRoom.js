@@ -3,6 +3,7 @@ import { BsPerson, BsPersonFill } from 'react-icons/bs';
 import { getHotelRooms, postBooking, putBooking } from '../../services/hotelApi';
 import UserContext from '../../contexts/UserContext';
 import { useContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 export default function SelectRoom({ hotelId, setLoadBrief, loadBrief, changeRoom, myBooking }) {
   //changeRoom e myBooking são opicionais;
@@ -91,17 +92,22 @@ export default function SelectRoom({ hotelId, setLoadBrief, loadBrief, changeRoo
       putBooking({ token, body, bookingId })
         .then((res) => {
           setLoadBrief(false);
+          toast('Quarto trocado com sucesso!');
         })
         .catch((error) => {
           setIsDisabled(false);
+          toast('Algo deu errado com a troca do quarto!');
         });
+     
       return;
     }
     postBooking({ token, body })
       .then((res) => {
         setLoadBrief(true);
+        toast('Hotel escolhido com sucesso!');
       })
       .catch((error) => {
+        toast('Algo deu errado com a escolha do hotel!');
         setIsDisabled(false);
       });
   }
