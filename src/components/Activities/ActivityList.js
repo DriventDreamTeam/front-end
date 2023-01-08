@@ -41,16 +41,12 @@ ActivityList.Area = ({ name: areaName, activities }) => {
       <h3>{areaName}</h3>
       <ul>
         {activities?.map(({ Activity }, index) => {
-          const [start, end] = [
-            new Date(activities[index].Activity[index].startsAt),
-            new Date(activities[index].Activity[index].endsAt),
-          ];
-          const duration = end.getHours() - start.getHours();
-          const timeWindow = start.toTimeString().slice(0, 5) + ' - ' + end.toTimeString().slice(0, 5);
-
           return (
             <Fragment key={index}>
               {Activity.map((activity, index) => {
+                const [start, end] = [new Date(activity?.startsAt), new Date(activity?.endsAt)];
+                const duration = end.getHours() - start.getHours();
+                const timeWindow = start.toTimeString().slice(0, 5) + ' - ' + end.toTimeString().slice(0, 5);
                 return (
                   <Area.Card duration={duration} key={index}>
                     <div>
