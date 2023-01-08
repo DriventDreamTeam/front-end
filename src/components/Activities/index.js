@@ -14,10 +14,9 @@ export default function ActivitiesSection() {
   }
 
   return (
-    <Section>
-      <Section.Title>Escolha de Atividades</Section.Title>
+    <>
       <ChooseDay selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
       {selectedDay ? <Main /> : <Section.Loading />}
-    </Section>
+    </>
   );
 }

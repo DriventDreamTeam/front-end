@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from 'react';
+import MyLoader from '../../../components/Loading';
 import Container from '../../../components/TicketPayment/PaymentResume';
 import UserContext from '../../../contexts/UserContext';
 import { getTickets } from '../../../services/ticketsApi';
@@ -16,5 +17,9 @@ export default function Payment() {
         .catch((error) => {});
     }
   }, [ticket]);
-  return <>{ticket.length !== 0 && <Container ticket={ticket} setTicket={setTicket}></Container>}</>;
+
+  if (ticket.length !== 0) {
+    return <Container ticket={ticket} setTicket={setTicket}></Container>;
+  }
+  return <MyLoader></MyLoader>;
 }

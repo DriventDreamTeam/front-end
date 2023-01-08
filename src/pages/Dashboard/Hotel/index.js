@@ -10,6 +10,7 @@ import { getPayment } from '../../../services/paymentsApi';
 import useTicket from '../../../hooks/api/useTicket';
 import UnauthorizedAccessMessage from '../../../components/UnauthorizedMessage';
 import { Title } from '../../../components/utils';
+import MyLoader from '../../../components/Loading';
 
 export default function Hotel() {
   const [hotels, setHotels] = useState([]);
@@ -17,6 +18,7 @@ export default function Hotel() {
   const [selected, setSelected] = useState({});
   const [loadBrief, setLoadBrief] = useState(false);
   const { userData } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
   const { ticket } = useTicket();
 
   const unauthorizedMessagePayment = 'Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem';
@@ -25,20 +27,29 @@ export default function Hotel() {
     getHotels(userData.token).then((res) => {
       setHotels([...res]);
     });
-    if(ticket) {
-      getPayment(userData.token, ticket?.id).then((res) => {
-        setPayment({ ...res });
-      });
-    }
-    getBooking( userData.token ).then((res) => {
+    getBooking(userData.token).then((res) => {
       setLoadBrief(true);
     });
-    if(!loadBrief) {
-      getBooking( userData.token ).then((res) => {
+    if (!loadBrief) {
+      getBooking(userData.token).then((res) => {
         setLoadBrief(true);
       });
     }
+    if (ticket) {
+      getPayment(userData.token, ticket?.id).then((res) => {
+        setPayment({ ...res });
+        setLoading(false);
+      });
+    }
   }, [loadBrief, ticket]);
+
+  const doesNotExistPayment = Object.keys(payment).length === 0 || !ticket;
+
+  if (loading && !doesNotExistPayment) {
+    return <MyLoader />;
+  }
+
+  const doesNotIncludeHotel = hotels.length === 0;
 
   return (
     <>
@@ -47,9 +58,11 @@ export default function Hotel() {
         <>
           <HotelBrief hotelId={selected.id} setLoadBrief={setLoadBrief} loadBrief={loadBrief} />
         </>
-      ) : Object.keys(payment).length === 0|| !ticket ? <UnauthorizedAccessMessage text={unauthorizedMessagePayment} /> : (
+      ) : doesNotExistPayment ? (
+        <UnauthorizedAccessMessage text={unauthorizedMessagePayment} />
+      ) : (
         <>
-          {hotels.length === 0 ? (
+          {doesNotIncludeHotel ? (
             <Wrapper>
               <Warning>
                 <span>Sua modalidade de ingresso não inclui hospedagem</span>
