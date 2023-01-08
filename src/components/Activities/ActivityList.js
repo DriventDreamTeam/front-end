@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import styled from 'styled-components';
@@ -39,7 +40,7 @@ ActivityList.Area = ({ name: areaName, activities }) => {
     <Area>
       <h3>{areaName}</h3>
       <ul>
-        {activities?.map(({ id }, index) => {
+        {activities?.map(({ Activity }, index) => {
           const [start, end] = [
             new Date(activities[index].Activity[index].startsAt),
             new Date(activities[index].Activity[index].endsAt),
@@ -48,13 +49,19 @@ ActivityList.Area = ({ name: areaName, activities }) => {
           const timeWindow = start.toTimeString().slice(0, 5) + ' - ' + end.toTimeString().slice(0, 5);
 
           return (
-            <Area.Card duration={duration} key={id}>
-              <div>
-                <h5 className="title">{activities[index].Activity[index].name}</h5>
-                <p>{timeWindow}</p>
-              </div>
-              <ActivityCapacity capacity={activities[index].Activity[index].capacity} tickets={0} />
-            </Area.Card>
+            <Fragment key={index}>
+              {Activity.map((activity, index) => {
+                return (
+                  <Area.Card duration={duration} key={index}>
+                    <div>
+                      <h5 className="title">{activity.name}</h5>
+                      <p>{timeWindow}</p>
+                    </div>
+                    <ActivityCapacity capacity={activity.capacity} tickets={0} />
+                  </Area.Card>
+                );
+              })}
+            </Fragment>
           );
         })}
       </ul>
