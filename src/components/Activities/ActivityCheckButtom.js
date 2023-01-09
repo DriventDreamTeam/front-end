@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import UserContext from '../../contexts/UserContext';
 import ActivityContext from '../../contexts/ActivityContext';
-import { postActivitySchedule } from '../../services/activitiesApi';
+import { postActivitySchedule, Teste } from '../../services/activitiesApi';
 
 export default function ActivityCheckButtom() {
   const { selectedActivityId, setSelectedActivityId } = useContext(ActivityContext);
@@ -13,7 +13,8 @@ export default function ActivityCheckButtom() {
   function handleClick() {
     if (!isDisabled) {
       // setIsDisabled(true);
-      postActivitySchedule(token, selectedActivityId)
+
+      postActivitySchedule({ token, selectedActivityId })
         .then((res) => {
           setSelectedActivityId(0);
           //   setIsDisabled(false);

@@ -20,11 +20,11 @@ export async function getActivitiesByDateId(token, dateId) {
   return response.data;
 }
 
-export async function postActivitySchedule(token, selectedActivityId) {
-  const response = await api.post(`/schedule/${selectedActivityId}`, {
+export async function postActivitySchedule({ token, selectedActivityId }) {
+  let body = {};
+  const response = await api.post(`/schedule/${selectedActivityId}`, body, {
     headers: {
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTY3MzI2Nzk2Mn0.vMYiU61RtqcIxbX5P7Xu9gftUXi4AZ5SkJl9izR7wX0',
+      Authorization: `Bearer ${token}`,
     },
   });
-  return response.data;
 }
