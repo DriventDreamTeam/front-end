@@ -1,8 +1,7 @@
-import { Fragment } from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { Fragment, useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ActivityCapacity from './ActivityCapacity';
+import ActivityContext from '../../contexts/ActivityContext';
 
 export default function ActivityList({ activities, children }) {
   const [areas, setAreas] = useState({});
@@ -36,6 +35,8 @@ export default function ActivityList({ activities, children }) {
 }
 
 ActivityList.Area = ({ name: areaName, activities }) => {
+  const { setSelectedActivityId } = useContext(ActivityContext);
+  
   return (
     <Area>
       <h3>{areaName}</h3>
@@ -48,7 +49,13 @@ ActivityList.Area = ({ name: areaName, activities }) => {
                 const duration = end.getHours() - start.getHours();
                 const timeWindow = start.toTimeString().slice(0, 5) + ' - ' + end.toTimeString().slice(0, 5);
                 return (
-                  <Area.Card duration={duration} key={index}>
+                  <Area.Card
+                    duration={duration}
+                    key={index}
+                    onClick={() => {
+                      setSelectedActivityId(activity.id);
+                    }}
+                  >
                     <div>
                       <h5 className="title">{activity.name}</h5>
                       <p>{timeWindow}</p>
