@@ -3,6 +3,7 @@ import Cards from 'react-credit-cards-2';
 import styled from 'styled-components';
 import 'react-credit-cards-2/es/styles-compiled.css';
 import { postPayment } from '../../services/paymentsApi';
+import { toast } from 'react-toastify';
 
 export default class PaymentForm extends React.Component {
   state = {
@@ -38,6 +39,9 @@ export default class PaymentForm extends React.Component {
     };
     postPayment(this?.props?.token, body).then((res) => {
       this?.props?.setTicket({ ...ticket, status: 'PAID' });
+      toast('Pagamento realizado com sucesso!');
+    }).catch (err => {
+      toast('Algo deu errado com o pagamento!');
     });
   };
 
