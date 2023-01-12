@@ -22,9 +22,10 @@ export async function getActivitiesByDateId(token, dateId) {
 
 export async function postActivitySchedule({ token, selectedActivityId }) {
   let body = {};
-  const response = await api.post(`/schedule/${selectedActivityId}`, body, {
+  const response = await api.post(`activities/schedule/${selectedActivityId}`, body, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
+  return response.data;
 }

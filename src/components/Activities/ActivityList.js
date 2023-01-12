@@ -2,9 +2,11 @@ import { Fragment, useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ActivityCapacity from './ActivityCapacity';
 import ActivityContext from '../../contexts/ActivityContext';
+import ActivityCheckButtom from './ActivityCheckButtom';
 
 export default function ActivityList({ activities, children }) {
   const [areas, setAreas] = useState({});
+  const { selectedActivityId } = useContext(ActivityContext);
 
   useEffect(() => {
     if (activities?.length > 0) {
@@ -23,20 +25,23 @@ export default function ActivityList({ activities, children }) {
   }, [activities]);
 
   return (
-    <Wrapper>
-      {activities &&
-        Object.entries(areas).map((area, index) => {
-          const [name, list] = area;
-          return <ActivityList.Area key={index} name={name} activities={list} />;
-        })}
-      {children}
-    </Wrapper>
+    <>
+      <Wrapper>
+        {activities &&
+          Object.entries(areas).map((area, index) => {
+            const [name, list] = area;
+            return <ActivityList.Area key={index} name={name} activities={list} />;
+          })}
+        {children}
+        {selectedActivityId ? <ActivityCheckButtom /> : <></>}
+      </Wrapper>
+    </>
   );
 }
 
 ActivityList.Area = ({ name: areaName, activities }) => {
-  const { setSelectedActivityId } = useContext(ActivityContext);
-  
+  const { selectedActivityId, setSelectedActivityId } = useContext(ActivityContext);
+
   return (
     <Area>
       <h3>{areaName}</h3>
@@ -51,16 +56,25 @@ ActivityList.Area = ({ name: areaName, activities }) => {
                 return (
                   <Area.Card
                     duration={duration}
+                    selectedActivityId={selectedActivityId}
+                    isScheduled={activity.isScheduled}
+                    id={activity.id}
                     key={index}
                     onClick={() => {
-                      setSelectedActivityId(activity.id);
+                      if(!activity.isScheduled) {
+                        setSelectedActivityId(activity.id);
+                      }
                     }}
                   >
                     <div>
                       <h5 className="title">{activity.name}</h5>
                       <p>{timeWindow}</p>
                     </div>
-                    <ActivityCapacity capacity={activity.capacity} tickets={0} />
+                    <ActivityCapacity
+                      capacity={activity.capacity}
+                      tickets={activity.ActivityTicket.length}
+                      isScheduled={activity.isScheduled}
+                    />
                   </Area.Card>
                 );
               })}
@@ -109,13 +123,13 @@ const Area = styled.section`
 `;
 
 Area.Card = styled.li`
-  background-color: #f1f1f1;
+  background-color: ${(props) => props.selectedActivityId === props.id ? '#FFD37D' : '#f1f1f1'};
   width: 100%;
   height: ${(props) => `${80 * props.duration}px`};
   padding: 0.75rem;
   font-size: 12px;
   border-radius: 5px;
-  cursor: pointer;
+  cursor: ${(props) => props.isScheduled ? '' : 'pointer'};
   display: flex;
 
   div {
@@ -137,6 +151,6 @@ Area.Card = styled.li`
   }
 
   &:hover {
-    filter: brightness(0.9);
+    filter: ${(props) => props.isScheduled ? '' : 'brightness(0.9)'};
   }
 `;
