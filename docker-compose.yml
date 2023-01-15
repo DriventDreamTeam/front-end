@@ -5,13 +5,15 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: drivent-front
+    ports:
+      - 3000:3000
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
     working_dir: /usr/src/drivent
-    command: npm run build
+    command: npm run start
     environment:
       NODE_ENV: production
       REACT_APP_API_BASE_URL: ${REACT_APP_API_BASE_URL}
