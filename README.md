@@ -30,6 +30,21 @@ npm run build
 npm start
 ```
 
+## How to use
+
+### After sign up and in it is time to fill up the form with your data and enroll in the event!
+![Foto 3](https://user-images.githubusercontent.com/102680625/221074738-52dd1261-ec06-40fb-a220-8955c044f7df.jpeg)
+### Now, choose your ticket and type and reserve your ticket:
+![Foto 4](https://user-images.githubusercontent.com/102680625/221074974-63b154b3-a863-4465-8285-96437f1966a0.jpeg)
+### Then it is time to pay for your ticket:
+![Foto 5](https://user-images.githubusercontent.com/102680625/221074921-50a3d856-4cc1-4d89-a315-12fb2026ef76.jpeg)
+### Now you are able to book one of the hotels options and also one of its rooms (If you chose a ticket with hotel):
+![Foto 6](https://user-images.githubusercontent.com/102680625/221075640-25a75d9c-e6ad-4fa4-a5e9-b0cf90786887.jpeg)
+### It is also possible to change your room after booking:
+![Foto 7](https://user-images.githubusercontent.com/102680625/221076295-1ce30be2-7ce6-4fa9-8c40-84d8ae1cd5b5.jpeg)
+### Now you are able to choose your activities
+![Foto 8](https://user-images.githubusercontent.com/102680625/221076609-521a9afe-feb4-4764-8686-f1fb17c9715a.jpeg)
+
 ## Running application locally or inside docker
 
 `.env.development` and `.env.test` must be changed if you and to run the application locally or inside docker. You can populate files based on `.env.example` file, but you need to consider the following:
