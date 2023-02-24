@@ -45,6 +45,15 @@ npm start
 ### Now you are able to choose your activities
 ![Foto 8](https://user-images.githubusercontent.com/102680625/221076609-521a9afe-feb4-4764-8686-f1fb17c9715a.jpeg)
 
+## Features
+- Sign Up and Sign In
+- Enrollment
+- Select Ticket
+- Pay Ticket
+- Book hotel room
+- Change hotel room
+- Choose activities
+
 ## Running application locally or inside docker
 
 `.env.development` and `.env.test` must be changed if you and to run the application locally or inside docker. You can populate files based on `.env.example` file, but you need to consider the following:
