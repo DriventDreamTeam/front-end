@@ -47,7 +47,7 @@ npm start
 
 ## Features
 - Sign Up and Sign In
-- Enrollment
+- Enroll to the event
 - Select ticket
 - Pay ticket
 - Book hotel room
