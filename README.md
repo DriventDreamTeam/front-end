@@ -48,8 +48,8 @@ npm start
 ## Features
 - Sign Up and Sign In
 - Enrollment
-- Select Ticket
-- Pay Ticket
+- Select ticket
+- Pay ticket
 - Book hotel room
 - Change hotel room
 - Choose activities
